@@ -1,19 +1,19 @@
 
 import inspect
+import types
 
 from .plugins import loaded_functions
 from ._state import State
 
 
-
 class PluginMount(type):
     def __new__(cls, name, bases, attrs):
         for module in loaded_functions:
-            funcs = dict()
+            name = module.__name__.replace(module.__package__, '').strip('.')
+            plugin = types.ModuleType(name)
             for function_name, function in  inspect.getmembers(module, predicate=inspect.isfunction):
-                funcs[function_name] = function
-            plugin = module.__name__.replace(module.__package__, '').strip('.')
-            attrs[plugin] = type.__new__(cls, 'plugin', (object,), funcs)
+                setattr(plugin, function_name, function)
+            attrs[name] = plugin
         return type.__new__(cls, name, bases, attrs)
 
 

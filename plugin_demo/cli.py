@@ -7,7 +7,7 @@ from state import State
 def main(parsed_args):
     state = State()
     handler = Handler(state)
-    handler.missions.do_stuff()
+    handler.missions.get_missions()
 
 
 if __name__ == '__main__':

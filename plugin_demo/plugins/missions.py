@@ -1,12 +1,14 @@
 from .base import Plugin
+from . import Api, Auth
 
-from .api import Api
 
 class Missions(Plugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         print('init missions')
 
-    def do_stuff(self):
-        Api.do_things(self)
-        print('doin stuff with state:', self.state)
+    def get_missions(self):
+        if not self.state.api_token:
+            Auth.get_api_token(self)
+        return Api.request(self, 'GET', 'api/missions')
+        

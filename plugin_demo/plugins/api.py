@@ -1,10 +1,13 @@
 from .base import Plugin
 
-
 class Api(Plugin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         print('init api')
 
-    def do_things(self):
-        print('doin things with state:', self.state)
+    def request(self, method, url):
+        url = f"http://somesite.com/{url}"
+        headers = {
+            'Authorization': f'Bearer {self.state.api_token}'
+        }
+        print(f"Mocked a request to {url} with {headers}")
